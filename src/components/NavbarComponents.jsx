@@ -9,7 +9,7 @@ const NavbarComponents = (props) => {
       <div className=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 py-8">
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           {/* <img src={Logo} className="h-40 w-40" alt="Flowbite Logo" /> */}
-          <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">Hafidz Movie</span>
+          <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">Rafi Movie</span>
         </Link>
         <button
           data-collapse-toggle="navbar-solid-bg"
