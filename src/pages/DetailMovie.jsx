@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { fetchMovieDetail, fetchMovieCast, fetchMovieTrailer } from '../Api';
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-import Footer from '../components/Footer';
-import NavbarComponents from '../components/NavbarComponents';
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { fetchMovieDetail, fetchMovieCast, fetchMovieTrailer } from "../Api";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import Footer from "../components/Footer";
+import NavbarComponents from "../components/NavbarComponents";
 import { RiStarSFill } from "react-icons/ri";
 
 const DetailMovie = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
+  const [opened, setOpened] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState(null);
 
   useEffect(() => {
@@ -24,14 +25,22 @@ const DetailMovie = () => {
         setCast(castResponse);
         setTrailerUrl(trailer);
       } catch (error) {
-        console.error('Error fetching movie details:', error);
+        console.error("Error fetching movie details:", error);
       }
     };
     fetchData();
   }, [id]);
 
+  const handleClick = () => {
+    setOpened(!opened);
+  };
+
   if (!movie) {
-    return <div className="text-white">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-700 border-opacity-25 h-16 w-16"></div>
+      </div>
+    );
   }
 
   const responsive = {
@@ -71,22 +80,45 @@ const DetailMovie = () => {
             <div>
               <h1 className="text-3xl font-bold mt-5">{movie.title}</h1>
               <div className="flex items-center mt-2">
-              <RiStarSFill className='w-6 h-6 text-yellow-500'/>
-                <h1 className="font-sans text-gray-200  ml-1 ">{movie.vote_average}/10</h1>
+                <RiStarSFill className="w-6 h-6 text-yellow-500" />
+                <h1 className="font-sans text-gray-200  ml-1 ">
+                  {movie.vote_average}/10
+                </h1>
               </div>
               <p className="mt-2 text-sm lg:text-base">{movie.status}</p>
               <div className="flex mt-4 space-x-4">
-                <a
-                  href={trailerUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block py-2 px-4 bg-blue-500 text-white rounded-lg font-semibold text-xl"
-                >
-                  Trailer
-                </a>
+                <div>
+                  <button
+                    onClick={handleClick}
+                    className="inline-block py-2 px-4 bg-yellow-500 hover:text-black text-white rounded-lg font-semibold text-xl"
+                  >
+                    Trailer
+                  </button>
+                </div>
+                {opened && (
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+                    <div className="bg-white rounded shadow-md p-8 w-[80%] relative">
+                      <button
+                        onClick={handleClick}
+                        className="absolute top-5 right-5 text-black font-bold"
+                      >
+                        X
+                      </button>
+                      <iframe
+                        className="rounded-md w-full h-[80vh]"
+                        src={`https://www.youtube.com/embed/${trailerUrl}`}
+                        title="YouTube video player"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                  </div>
+                )}
                 <Link
                   to="/"
-                  className="inline-block py-2 px-4 bg-red-500 text-white rounded-lg font-semibold text-xl"
+                  className="inline-block py-2 px-4 bg-red-500 hover:text-black text-white rounded-lg font-semibold text-xl"
                 >
                   Back
                 </Link>
@@ -96,7 +128,9 @@ const DetailMovie = () => {
           <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full bg-black opacity-60"></div>
         </div>
         <div className="mx-3 pt-10 mt-12 lg:px-32">
-          <h1 className="text-xl font-bold mt-10 md:mt-20 text-yellow-500">Overview</h1>
+          <h1 className="text-xl font-bold mt-10 md:mt-20 text-yellow-500">
+            Overview
+          </h1>
           <p className="mt-2 text-center">{movie.overview}</p>
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-5 mt-10">
             <div className="col-span-1">
@@ -104,7 +138,9 @@ const DetailMovie = () => {
               <p className="mt-2">{movie.popularity}</p>
             </div>
             <div className="col-span-1">
-              <h1 className="text-md text-yellow-500 font-bold">Released Date</h1>
+              <h1 className="text-md text-yellow-500 font-bold">
+                Released Date
+              </h1>
               <p className="mt-2">{movie.release_date}</p>
             </div>
             <div className="col-span-1">
@@ -121,7 +157,9 @@ const DetailMovie = () => {
             </div>
           </div>
         </div>
-        <h1 className="text-3xl mt-10  font-bold mx-3 pt-10 text-yellow-500  text-center lg:px-10 mb-11">Cast</h1>
+        <h1 className="text-3xl mt-10  font-bold mx-3 pt-10 text-yellow-500  text-center lg:px-10 mb-11">
+          Cast
+        </h1>
         <Carousel
           responsive={responsive}
           swipeable={true}
@@ -139,7 +177,7 @@ const DetailMovie = () => {
                   src={`https://image.tmdb.org/t/p/original${actor.profile_path}`}
                   alt={actor.name}
                   className="rounded-md mx-auto mb-2"
-                  style={{ width: '170px', height: '200px' }}
+                  style={{ width: "170px", height: "200px" }}
                 />
                 <p className="text-lg font-semibold">{actor.name}</p>
               </div>
