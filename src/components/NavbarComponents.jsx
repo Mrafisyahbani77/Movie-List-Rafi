@@ -1,24 +1,24 @@
 import React from 'react';
-import Logo from '../assets/Desain_tanpa_judul__1_-removebg-preview.png';
+import Logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
 const NavbarComponents = (props) => {
 
   document.title = props.title 
   return (
     <nav className="font-mono border-gray-20 bg-gray-800 border-gray-700 absolute w-full z-10 backdrop-filter backdrop-blur-lg opacity-50">
-      <div className=" max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 py-8">
+      <div className=" group max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 py-8">
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          {/* <img src={Logo} className="h-40 w-40" alt="Flowbite Logo" /> */}
-          <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">Rafi Movie</span>
+          <img src={Logo} className=" h-10 w-10" alt="Rafi Movie" />
+          <span className="self-center group-hover:text-purple-500 text-3xl font-semibold whitespace-nowrap dark:text-white">Rafi Movie</span>
         </Link>
-        <button
+        {/* <button
           data-collapse-toggle="navbar-solid-bg"
           type="button"
           className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
           aria-controls="navbar-solid-bg"
           aria-expanded="false"
         >
-          {/* <span className="sr-only"></span> */}
+          
           <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
           </svg>
@@ -32,7 +32,7 @@ const NavbarComponents = (props) => {
             </li>
            
           </ul>
-        </div>
+        </div> */}
       </div>
     </nav>
   );

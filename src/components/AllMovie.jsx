@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { fetchAllMovie } from '../Api';
+import { fetchAllMovie, FetchMoviesQuery } from '../Api';
 import { Link } from 'react-router-dom';
 import { RiStarSFill } from "react-icons/ri";
 
 const AllMovie = () => {
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const response = await fetchAllMovie(currentPage, searchQuery);
-      setMovies(response.results);
+      if (query === '') {
+        const response = await fetchAllMovie(currentPage);
+        setMovies(response.results);
+      } else {
+        const response = await FetchMoviesQuery(query);
+        setMovies(response.results);
+      }
     };
     fetchMovies();
-  }, [currentPage, searchQuery]);
+  }, [currentPage, query]);
 
   const fetchNextPage = async () => {
     setCurrentPage(currentPage + 1);
@@ -26,14 +31,21 @@ const AllMovie = () => {
     }
   };
 
-  const handleSearch = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSearchQuery(e.target.search.value);
+    setCurrentPage(1); // Reset to the first page on new search
+    if (query === '') {
+      const response = await fetchAllMovie(1);
+      setMovies(response.results);
+    } else {
+      const response = await FetchMoviesQuery(query);
+      setMovies(response.results);
+    }
   };
 
   return (
     <div className="container mx-auto px-6 py-10">
-      <form className="max-w-md mx-auto my-10" onSubmit={handleSearch}>
+      <form className="max-w-md mx-auto my-10" onSubmit={handleSubmit}>
         <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -44,10 +56,11 @@ const AllMovie = () => {
           <input
             type="search"
             id="default-search"
-            name="search"
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search By Film Name"
             required
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
           <button
             type="submit"
@@ -77,7 +90,7 @@ const AllMovie = () => {
                 <div className="p-4 bg-gray-900 bg-opacity-75">
                   <h1 className="font-semibold text-lg mb-2 text-yellow-500">{movie.title}</h1>
                   <div className="flex items-center mb-2">
-                  <RiStarSFill className='w-6 h-6 text-yellow-500'/>
+                    <RiStarSFill className='w-6 h-6 text-yellow-500' />
                     <h1 className="font-semibold text-lg ml-2 text-yellow-500">{movie.vote_average}/10</h1>
                   </div>
                   <p className="text-sm text-gray-400 font-sans">{movie.release_date}</p>

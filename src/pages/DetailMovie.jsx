@@ -31,6 +31,8 @@ const DetailMovie = () => {
     fetchData();
   }, [id]);
 
+  const linkTrailer = trailerUrl ? trailerUrl.substring(32, 50) : "";
+
   const handleClick = () => {
     setOpened(!opened);
   };
@@ -70,11 +72,11 @@ const DetailMovie = () => {
           />
           <div className="px-30 absolute -bottom-10 w-full h-[60vh]"></div>
           <div className="flex absolute -bottom-32 z-10 md:left-10 lg:left-28">
-            <div className="max-w-[12rem] mx-5">
+            <div className="mx-5 w-30">
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
-                className="rounded-xl"
+                className="rounded-xl w-40 sm:w-52 md:w-64 lg:w-44" // Adjusted the width here
               />
             </div>
             <div>
@@ -86,27 +88,33 @@ const DetailMovie = () => {
                 </h1>
               </div>
               <p className="mt-2 text-sm lg:text-base">{movie.status}</p>
-              <div className="flex mt-4 space-x-4">
-                <div>
+              <div className="flex mx-3 mt-4 space-x-2">
+                <div className="flex space-x-1">
                   <button
                     onClick={handleClick}
-                    className="inline-block py-2 px-4 bg-yellow-500 hover:text-black text-white rounded-lg font-semibold text-xl"
+                    className=" py-2 px-4 bg-yellow-500 hover:text-black text-white rounded-lg font-semibold text-xl"
                   >
                     Trailer
                   </button>
+                  <Link
+                    to="/"
+                    className=" py-2 px-4 bg-red-500 hover:text-black text-white rounded-lg font-semibold text-xl"
+                  >
+                    Back
+                  </Link>
                 </div>
                 {opened && (
                   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
-                    <div className="bg-white rounded shadow-md p-8 w-[80%] relative">
+                    <div className="bg-white rounded shadow-md p-4 sm:p-6 md:p-8 w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%] relative">
                       <button
                         onClick={handleClick}
-                        className="absolute top-5 right-5 text-black font-bold"
+                        className="absolute top-0 right-1 sm:top-5 sm:right-5 text-black font-bold"
                       >
                         X
                       </button>
                       <iframe
-                        className="rounded-md w-full h-[80vh]"
-                        src={`https://www.youtube.com/embed/${trailerUrl}`}
+                        className="rounded-md w-full h-[40vh] sm:h-[60vh] md:h-[70vh] lg:h-[80vh]"
+                        src={`https://www.youtube.com/embed/${linkTrailer}`}
                         title="YouTube video player"
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -116,19 +124,13 @@ const DetailMovie = () => {
                     </div>
                   </div>
                 )}
-                <Link
-                  to="/"
-                  className="inline-block py-2 px-4 bg-red-500 hover:text-black text-white rounded-lg font-semibold text-xl"
-                >
-                  Back
-                </Link>
               </div>
             </div>
           </div>
           <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full bg-black opacity-60"></div>
         </div>
         <div className="mx-3 pt-10 mt-12 lg:px-32">
-          <h1 className="text-xl font-bold mt-10 md:mt-20 text-yellow-500">
+          <h1 className="text-xl text-center font-bold mt-20 md:mt-20 text-yellow-500">
             Overview
           </h1>
           <p className="mt-2 text-center">{movie.overview}</p>
