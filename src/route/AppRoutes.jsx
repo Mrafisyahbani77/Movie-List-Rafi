@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import DetailMovie from '../pages/DetailMovie';
-import MovieDisplay from '../pages/MovieDisplay';
+import Spinner from '@/components/ui/Spinner';
+
+// Lazy load the pages for code splitting
+const MovieDisplay = lazy(() => import('@/pages/MovieDisplay'));
+const DetailMovie = lazy(() => import('@/pages/DetailMovie'));
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route exact path="/" element={<MovieDisplay />} />
-      <Route path="/movie/:id" element={<DetailMovie />} />
-    </Routes>
+    <Suspense fallback={<Spinner />}>
+      <Routes>
+        <Route exact path="/" element={<MovieDisplay />} />
+        <Route path="/movie/:id" element={<DetailMovie />} />
+      </Routes>
+    </Suspense>
   );
 };
 

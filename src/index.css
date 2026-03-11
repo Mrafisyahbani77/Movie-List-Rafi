@@ -1,26 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --maxwidth: 1280px;
-  --whitee: #356232;
-  --lightgrey: #eee;
-  --medgrey: #353535;
-  --darkgrey: #1c1c1c;
-  --fontSuperBig: 2.5rem;
-  --fontBig: 1.5rem;
-  --fontMed: 1.2rem;
-  --fontSmall: 1rem;
+@layer base {
+  body {
+    @apply bg-surface-50 text-slate-700 antialiased;
+  }
 }
 
-
-.hover\:shadow-gradient-to-l:hover {
-  box-shadow: 0 4px 6px -1px rgba(171, 64, 244, 0.7), 0 2px 4px -2px rgba(171, 64, 244, 0.7), 0 4px 6px -1px rgba(0, 206, 201, 0.7), 0 2px 4px -2px rgba(0, 206, 201, 0.7);
+/* Optional custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
+::-webkit-scrollbar-track {
+  @apply bg-surface-50;
+}
 
-body {
-  --tw-bg-opacity: 1;
-  background-color: #222831;
+::-webkit-scrollbar-thumb {
+  @apply bg-surface-300 rounded-full hover:bg-surface-400 transition-colors;
+}
+
+/* Override daisyUI/carousel default arrows if to be cleaner */
+.react-multiple-carousel__arrow {
+  @apply bg-white/80 border border-surface-200 shadow-sm backdrop-blur-sm transition-all hover:bg-brand-50 hover:border-brand-200 hover:text-brand-600 hover:scale-110 !important;
 }
